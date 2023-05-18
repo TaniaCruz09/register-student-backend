@@ -1,0 +1,61 @@
+version: '3.9'
+services:
+  # nest:
+  #   image: node
+  #   container_name: nest
+  #   build:
+  #     context: ../registro-notas-escolares
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - DB_HOST=postgresdb
+  #     - DB_PORT=5432
+  #     - DB_NAME=postgres
+  #     - DB_USERNAME=postgres
+  #     - DB_PASSWORD=12345678
+  #   restart: always
+  #   networks:
+  #     - clase
+  #     - default
+  #   ports:
+  #     - 3000:3000
+
+  postgres:
+    image: postgres:14.3
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    container_name: postgresdb
+    volumes:
+      - clasedb:/var/lib/postgresql/data
+      - ./respaldos:/respaldos
+    networks:
+      - clase
+      - default
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmindb
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@test.com
+      PGADMIN_DEFAULT_PASSWORD: 12345678
+    volumes:
+      - pgavolumen:/var/lib/pgadmin
+      - ./respaldos:/respaldos
+    ports:
+      - 8082:80
+    networks:
+      - clase
+      - default
+
+networks:
+  clase:
+    driver: bridge
+    name: clase
+
+volumes:
+  clasedb:
+  pgavolumen:
