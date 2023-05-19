@@ -32,6 +32,7 @@ export class Student {
   })
   notes?: Notes[];
 
+  //estudents depende de image
   @OneToOne(() => ImageStudent)
   @JoinColumn()
   imageStudent?: ImageStudent;

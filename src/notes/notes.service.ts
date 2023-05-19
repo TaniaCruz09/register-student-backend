@@ -25,7 +25,10 @@ export class NotesService {
 
   //metodo para ver notas por su id
   async getNotesById(id: string) {
-    return this.noteRepository.findOneBy({ id });
+    return this.noteRepository.findOne({
+      where: { id },
+      relations: ['students'],
+    });
   }
   //metodo para crear notas
   async createNotes(notesDTO: CreateNotesDto) {
